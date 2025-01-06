@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Profile and Projects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="profile">
+                <img src="images/me.png" alt="Ahmed Ayman" class="profile-img">
+                <h1>Ahmed Ayman</h1>
+                <p class="tagline">Data Analyst | Futuristic Thinker</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-button">Home</a></li>
+                    <li><a href="manage-projects.html" class="nav-button">Manage Projects</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="manage-profile" class="section">
+        <div class="container">
+            <h2>Manage Profile</h2>
+
+            <!-- Edit Profile Section -->
+            <div class="manage-section">
+                <h3>Edit Profile Information</h3>
+                <form id="edit-profile-form">
+                    <label for="profile-image">Upload New Profile Image:</label>
+                    <input type="file" id="profile-image" name="profile-image" accept="image/*">
+
+                    <label for="profile-name">New Name:</label>
+                    <input type="text" id="profile-name" name="profile-name">
+
+                    <label for="profile-tagline">New Tagline:</label>
+                    <input type="text" id="profile-tagline" name="profile-tagline">
+
+                    <label for="profile-phone">New Phone Number:</label>
+                    <input type="text" id="profile-phone" name="profile-phone">
+
+                    <label for="profile-email">New Email:</label>
+                    <input type="email" id="profile-email" name="profile-email">
+
+                    <label for="profile-linkedin">New LinkedIn URL:</label>
+                    <input type="url" id="profile-linkedin" name="profile-linkedin">
+
+                    <label for="profile-facebook">New Facebook URL:</label>
+                    <input type="url" id="profile-facebook" name="profile-facebook">
+
+                    <button type="submit">Update Profile</button>
+                </form>
+                <div id="profile-message"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="manage-projects" class="section">
+        <div class="container">
+            <h2>Manage Projects</h2>
+
+            <!-- Add Project Section -->
+            <div class="manage-section">
+                <h3>Add New Project</h3>
+                <form id="add-project-form">
+                    <label for="project-name">Project Name:</label>
+                    <input type="text" id="project-name" name="project-name" required>
+
+                    <label for="project-image">Upload Image:</label>
+                    <input type="file" id="project-image" name="project-image" accept="image/*" required>
+
+                    <label for="project-link">Project Link:</label>
+                    <input type="url" id="project-link" name="project-link" required>
+
+                    <button type="submit">Add Project</button>
+                </form>
+                <div id="add-message"></div>
+            </div>
+
+            <!-- Delete Project Section -->
+            <div class="manage-section">
+                <h3>Delete Project</h3>
+                <form id="delete-project-form">
+                    <label for="delete-project-name">Select Project:</label>
+                    <select id="delete-project-name" name="delete-project-name" required>
+                        <option value="">-- Select a Project --</option>
+                    </select>
+
+                    <button type="submit">Delete Project</button>
+                </form>
+                <div id="delete-message"></div>
+            </div>
+
+            <!-- Edit Project Section -->
+            <div class="manage-section">
+                <h3>Edit Project</h3>
+                <form id="edit-project-form">
+                    <label for="edit-project-name">Select Project:</label>
+                    <select id="edit-project-name" name="edit-project-name" required>
+                        <option value="">-- Select a Project --</option>
+                    </select>
+
+                    <label for="new-project-name">New Project Name:</label>
+                    <input type="text" id="new-project-name" name="new-project-name">
+
+                    <label for="new-project-image">Upload New Image:</label>
+                    <input type="file" id="new-project-image" name="new-project-image" accept="image/*">
+
+                    <label for="new-project-link">New Project Link:</label>
+                    <input type="url" id="new-project-link" name="new-project-link">
+
+                    <button type="submit">Update Project</button>
+                </form>
+                <div id="edit-message"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Ahmed Ayman. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to load projects into dropdowns
+        function loadProjectsIntoDropdowns() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            const deleteDropdown = document.getElementById('delete-project-name');
+            const editDropdown = document.getElementById('edit-project-name');
+
+            // Clear dropdowns
+            deleteDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
+            editDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
+
+            // Populate dropdowns
+            projects.forEach((project, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = project.name;
+                deleteDropdown.appendChild(option.cloneNode(true));
+                editDropdown.appendChild(option);
+            });
+        }
+
+        // Function to add a new project
+        document.getElementById('add-project-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const projectName = document.getElementById('project-name').value;
+            const projectImage = document.getElementById('project-image').files[0];
+            const projectLink = document.getElementById('project-link').value;
+
+            if (projectName && projectImage && projectLink) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const project = {
+                        name: projectName,
+                        image: event.target.result,
+                        link: projectLink
+                    };
+
+                    // Save to localStorage
+                    let projects = JSON.parse(localStorage.getItem('projects')) || [];
+                    projects.push(project);
+                    localStorage.setItem('projects', JSON.stringify(projects));
+
+                    // Show success message
+                    document.getElementById('add-message').innerHTML = '<p style="color: green;">Project added successfully!</p>';
+
+                    // Reload dropdowns
+                    loadProjectsIntoDropdowns();
+                };
+                reader.readAsDataURL(projectImage);
+            } else {
+                document.getElementById('add-message').innerHTML = '<p style="color: red;">Please fill all fields.</p>';
+            }
+        });
+
+        // Function to delete a project
+        document.getElementById('delete-project-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const projectIndex = document.getElementById('delete-project-name').value;
+
+            if (projectIndex !== "") {
+                let projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projects.splice(projectIndex, 1); // Remove the project at the specified index
+                localStorage.setItem('projects', JSON.stringify(projects));
+
+                // Show success message
+                document.getElementById('delete-message').innerHTML = '<p style="color: green;">Project deleted successfully!</p>';
+
+                // Reload dropdowns
+                loadProjectsIntoDropdowns();
+            } else {
+                document.getElementById('delete-message').innerHTML = '<p style="color: red;">Please select a project.</p>';
+            }
+        });
+
+        // Function to edit a project
+        document.getElementById('edit-project-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const projectIndex = document.getElementById('edit-project-name').value;
+            const newName = document.getElementById('new-project-name').value;
+            const newImage = document.getElementById('new-project-image').files[0];
+            const newLink = document.getElementById('new-project-link').value;
+
+            if (projectIndex !== "") {
+                let projects = JSON.parse(localStorage.getItem('projects')) || [];
+                const project = projects[projectIndex];
+
+                if (newName) project.name = newName;
+                if (newLink) project.link = newLink;
+
+                if (newImage) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        project.image = event.target.result;
+                        localStorage.setItem('projects', JSON.stringify(projects));
+
+                        // Show success message
+                        document.getElementById('edit-message').innerHTML = '<p style="color: green;">Project updated successfully!</p>';
+
+                        // Reload dropdowns
+                        loadProjectsIntoDropdowns();
+                    };
+                    reader.readAsDataURL(newImage);
+                } else {
+                    localStorage.setItem('projects', JSON.stringify(projects));
+
+                    // Show success message
+                    document.getElementById('edit-message').innerHTML = '<p style="color: green;">Project updated successfully!</p>';
+
+                    // Reload dropdowns
+                    loadProjectsIntoDropdowns();
+                }
+            } else {
+                document.getElementById('edit-message').innerHTML = '<p style="color: red;">Please select a project.</p>';
+            }
+        });
+
+        // Function to edit profile
+        document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const profileImage = document.getElementById('profile-image').files[0];
+            const profileName = document.getElementById('profile-name').value;
+            const profileTagline = document.getElementById('profile-tagline').value;
+            const profilePhone = document.getElementById('profile-phone').value;
+            const profileEmail = document.getElementById('profile-email').value;
+            const profileLinkedin = document.getElementById('profile-linkedin').value;
+            const profileFacebook = document.getElementById('profile-facebook').value;
+
+            let profile = JSON.parse(localStorage.getItem('profile')) || {};
+
+            if (profileImage) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    profile.image = event.target.result;
+                    localStorage.setItem('profile', JSON.stringify(profile));
+                    updateProfile();
+                };
+                reader.readAsDataURL(profileImage);
+            }
+
+            if (profileName) profile.name = profileName;
+            if (profileTagline) profile.tagline = profileTagline;
+            if (profilePhone) profile.phone = profilePhone;
+            if (profileEmail) profile.email = profileEmail;
+            if (profileLinkedin) profile.linkedin = profileLinkedin;
+            if (profileFacebook) profile.facebook = profileFacebook;
+
+            localStorage.setItem('profile', JSON.stringify(profile));
+            updateProfile();
+
+            // Show success message
+            document.getElementById('profile-message').innerHTML = '<p style="color: green;">Profile updated successfully!</p>';
+        });
+
+        // Function to update profile in the portfolio page
+        function updateProfile() {
+            const profile = JSON.parse(localStorage.getItem('profile')) || {};
+            const profileImg = document.querySelector('.profile-img');
+            const profileName = document.querySelector('header h1');
+            const profileTagline = document.querySelector('.tagline');
+            const contactLinks = document.querySelectorAll('.contact-link');
+
+            if (profile.image) profileImg.src = profile.image;
+            if (profile.name) profileName.textContent = profile.name;
+            if (profile.tagline) profileTagline.textContent = profile.tagline;
+
+            if (profile.phone) {
+                contactLinks[0].querySelector('span').textContent = profile.phone;
+                contactLinks[0].href = `tel:${profile.phone}`;
+                contactLinks[1].href = `https://wa.me/${profile.phone}`;
+            }
+
+            if (profile.email) {
+                contactLinks[2].querySelector('span').textContent = profile.email;
+                contactLinks[2].href = `mailto:${profile.email}`;
+            }
+
+            if (profile.linkedin) {
+                contactLinks[3].querySelector('span').textContent = 'LinkedIn';
+                contactLinks[3].href = profile.linkedin;
+            }
+
+            if (profile.facebook) {
+                contactLinks[4].querySelector('span').textContent = 'Facebook';
+                contactLinks[4].href = profile.facebook;
+            }
+        }
+
+        // Load projects into dropdowns when the page loads
+        document.addEventListener('DOMContentLoaded', loadProjectsIntoDropdowns);
+
+        // Load profile data when the page loads
+        document.addEventListener('DOMContentLoaded', updateProfile);
+    </script>
+</body>
+</html>
