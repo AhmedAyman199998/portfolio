@@ -118,54 +118,33 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Function to load projects from Firebase
+        // Function to load projects from localStorage
         function loadProjects() {
-            database.ref('projects').once('value', (snapshot) => {
-                const projects = snapshot.val() || [];
-                const projectsGrid = document.getElementById('projects-grid');
-                projectsGrid.innerHTML = ''; // Clear the grid before loading
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            const projectsGrid = document.getElementById('projects-grid');
+            projectsGrid.innerHTML = ''; // Clear the grid before loading
 
-                projects.forEach(project => {
-                    const projectElement = document.createElement('div');
-                    projectElement.classList.add('project');
+            projects.forEach(project => {
+                const projectElement = document.createElement('div');
+                projectElement.classList.add('project');
 
-                    const imgElement = document.createElement('img');
-                    imgElement.src = project.image;
-                    imgElement.alt = project.name;
+                const imgElement = document.createElement('img');
+                imgElement.src = project.image;
+                imgElement.alt = project.name;
 
-                    const nameElement = document.createElement('h3');
-                    nameElement.textContent = project.name;
+                const nameElement = document.createElement('h3');
+                nameElement.textContent = project.name;
 
-                    const linkElement = document.createElement('a');
-                    linkElement.href = project.link;
-                    linkElement.target = "_blank";
-                    linkElement.appendChild(imgElement);
+                const linkElement = document.createElement('a');
+                linkElement.href = project.link;
+                linkElement.target = "_blank";
+                linkElement.appendChild(imgElement);
 
-                    projectElement.appendChild(linkElement);
-                    projectElement.appendChild(nameElement);
+                projectElement.appendChild(linkElement);
+                projectElement.appendChild(nameElement);
 
-                    projectsGrid.appendChild(projectElement);
-                });
+                projectsGrid.appendChild(projectElement);
             });
         }
 
@@ -194,6 +173,43 @@
         }
 
         typeWriter();
+
+        // Function to update profile from localStorage
+        function updateProfile() {
+            const profile = JSON.parse(localStorage.getItem('profile')) || {};
+            const profileImg = document.querySelector('.profile-img');
+            const profileName = document.querySelector('header h1');
+            const profileTagline = document.querySelector('.tagline');
+            const contactLinks = document.querySelectorAll('.contact-link');
+
+            if (profile.image) profileImg.src = profile.image;
+            if (profile.name) profileName.textContent = profile.name;
+            if (profile.tagline) profileTagline.textContent = profile.tagline;
+
+            if (profile.phone) {
+                contactLinks[0].querySelector('span').textContent = profile.phone;
+                contactLinks[0].href = `tel:${profile.phone}`;
+                contactLinks[1].href = `https://wa.me/${profile.phone}`;
+            }
+
+            if (profile.email) {
+                contactLinks[2].querySelector('span').textContent = profile.email;
+                contactLinks[2].href = `mailto:${profile.email}`;
+            }
+
+            if (profile.linkedin) {
+                contactLinks[3].querySelector('span').textContent = 'LinkedIn';
+                contactLinks[3].href = profile.linkedin;
+            }
+
+            if (profile.facebook) {
+                contactLinks[4].querySelector('span').textContent = 'Facebook';
+                contactLinks[4].href = profile.facebook;
+            }
+        }
+
+        // Load profile data when the page loads
+        document.addEventListener('DOMContentLoaded', updateProfile);
     </script>
 </body>
 </html>
