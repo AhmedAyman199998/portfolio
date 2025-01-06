@@ -13,6 +13,7 @@
             <div class="profile">
                 <img src="images/me.png" alt="Ahmed Ayman" class="profile-img">
                 <h1>Ahmed Ayman</h1>
+                <p class="tagline">Data Analyst | Futuristic Thinker</p>
             </div>
             <nav>
                 <ul>
@@ -28,9 +29,7 @@
     <section id="about" class="section">
         <div class="container">
             <h2>About Me</h2>
-            <p id="typing-effect">
-                <!-- النص سيتم كتابته بواسطة JavaScript -->
-            </p>
+            <p id="typing-effect"></p> <!-- النص سيتم كتابته هنا -->
         </div>
     </section>
 
@@ -38,40 +37,51 @@
         <div class="container">
             <h2>Projects</h2>
             <div class="projects-grid">
-                <!-- إضافة المشاريع يدويًا هنا -->
+                <!-- Project 1 -->
                 <div class="project">
-                    <a href="https://example.com/paris-olympics" target="_blank">
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7271539818487037953/" target="_blank">
                         <img src="images/polympic.png" alt="Paris Olympics Dashboard">
                     </a>
                     <h3>Paris Olympics Dashboard</h3>
                 </div>
 
+                <!-- Project 2 -->
                 <div class="project">
-                    <a href="https://example.com/health-care" target="_blank">
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7272006760498937856/" target="_blank">
                         <img src="images/Health1.png" alt="Health Care Dashboard">
                     </a>
                     <h3>Health Care Dashboard</h3>
                 </div>
 
+                <!-- Project 3 -->
                 <div class="project">
-                    <a href="https://example.com/financial-dashboard" target="_blank">
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7274089737122906112/" target="_blank">
                         <img src="images/Finance.png" alt="Financial Dashboard">
                     </a>
                     <h3>Financial Dashboard</h3>
                 </div>
 
+                <!-- Project 4 -->
                 <div class="project">
-                    <a href="https://example.com/hospital-emergency" target="_blank">
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7276941248395948032/" target="_blank">
                         <img src="images/Health2.png" alt="Hospital Emergency Dashboard">
                     </a>
                     <h3>Hospital Emergency Dashboard</h3>
                 </div>
 
+                <!-- Project 5 -->
                 <div class="project">
-                    <a href="https://example.com/sales-market" target="_blank">
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7277447572619747328/" target="_blank">
                         <img src="images/Sales1.png" alt="Sales Market Dashboard">
                     </a>
                     <h3>Sales Market Dashboard</h3>
+                </div>
+                               <!-- Project 6 -->
+                <div class="project">
+                    <a https://www.linkedin.com/feed/update/urn:li:activity:7279532310264242176/" target="_blank">
+                        <img src="images/hospital.png" alt="HealthCare Dashboard">
+                    </a>
+                    <h3>HealthCare DashboardSales Market Dashboard</h3>
                 </div>
             </div>
         </div>
@@ -149,7 +159,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript لكتابة النبذة عنك حرفًا حرفًا -->
+    <!-- JavaScript لتأثير الكتابة والمسح -->
     <script>
         const text = "Welcome to my portfolio! I am Ahmed Ayman, a passionate data analyst skilled in Excel, Power Query, Power BI, SQL Server, and Python. I graduated from the Faculty of Computer Science and Information at Zagazig University in 2021. Let's explore my journey and achievements together.";
         const typingElement = document.getElementById('typing-effect');
@@ -158,20 +168,24 @@
 
         function typeWriter() {
             if (index < text.length && !isDeleting) {
+                // الكتابة
                 typingElement.innerHTML += text.charAt(index);
                 index++;
                 setTimeout(typeWriter, 50); // سرعة الكتابة (كل 50 مللي ثانية)
             } else if (index > 0 && isDeleting) {
+                // المسح
                 typingElement.innerHTML = text.substring(0, index - 1);
                 index--;
-                setTimeout(typeWriter, 30); // سرعة الحذف (كل 30 مللي ثانية)
+                setTimeout(typeWriter, 30); // سرعة المسح (كل 30 مللي ثانية)
             } else {
+                // الانتظار قبل إعادة الكتابة
                 isDeleting = !isDeleting;
-                setTimeout(typeWriter, isDeleting ? 10000 : 50); // الانتظار 10 ثواني قبل إعادة الكتابة
+                setTimeout(typeWriter, isDeleting ? 1000 : 50); // الانتظار 1 ثانية قبل إعادة الكتابة
             }
         }
 
-        typeWriter(); // بدء تأثير الكتابة
+        // بدء التأثير عند تحميل الصفحة
+        typeWriter();
     </script>
 </body>
 </html>
