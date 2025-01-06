@@ -28,8 +28,6 @@
     <section id="manage-profile" class="section">
         <div class="container">
             <h2>Manage Profile</h2>
-
-            <!-- Edit Profile Section -->
             <div class="manage-section">
                 <h3>Edit Profile Information</h3>
                 <form id="edit-profile-form">
@@ -64,8 +62,6 @@
     <section id="manage-projects" class="section">
         <div class="container">
             <h2>Manage Projects</h2>
-
-            <!-- Add Project Section -->
             <div class="manage-section">
                 <h3>Add New Project</h3>
                 <form id="add-project-form">
@@ -83,7 +79,6 @@
                 <div id="add-message"></div>
             </div>
 
-            <!-- Delete Project Section -->
             <div class="manage-section">
                 <h3>Delete Project</h3>
                 <form id="delete-project-form">
@@ -97,7 +92,6 @@
                 <div id="delete-message"></div>
             </div>
 
-            <!-- Edit Project Section -->
             <div class="manage-section">
                 <h3>Edit Project</h3>
                 <form id="edit-project-form">
@@ -128,24 +122,45 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Function to load projects into dropdowns
         function loadProjectsIntoDropdowns() {
-            const projects = JSON.parse(localStorage.getItem('projects')) || [];
-            const deleteDropdown = document.getElementById('delete-project-name');
-            const editDropdown = document.getElementById('edit-project-name');
+            database.ref('projects').once('value', (snapshot) => {
+                const projects = snapshot.val() || [];
+                const deleteDropdown = document.getElementById('delete-project-name');
+                const editDropdown = document.getElementById('edit-project-name');
 
-            // Clear dropdowns
-            deleteDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
-            editDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
+                // Clear dropdowns
+                deleteDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
+                editDropdown.innerHTML = '<option value="">-- Select a Project --</option>';
 
-            // Populate dropdowns
-            projects.forEach((project, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = project.name;
-                deleteDropdown.appendChild(option.cloneNode(true));
-                editDropdown.appendChild(option);
+                // Populate dropdowns
+                projects.forEach((project, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = project.name;
+                    deleteDropdown.appendChild(option.cloneNode(true));
+                    editDropdown.appendChild(option);
+                });
             });
         }
 
@@ -166,10 +181,8 @@
                         link: projectLink
                     };
 
-                    // Save to localStorage
-                    let projects = JSON.parse(localStorage.getItem('projects')) || [];
-                    projects.push(project);
-                    localStorage.setItem('projects', JSON.stringify(projects));
+                    // Save to Firebase
+                    database.ref('projects').push(project);
 
                     // Show success message
                     document.getElementById('add-message').innerHTML = '<p style="color: green;">Project added successfully!</p>';
@@ -190,15 +203,17 @@
             const projectIndex = document.getElementById('delete-project-name').value;
 
             if (projectIndex !== "") {
-                let projects = JSON.parse(localStorage.getItem('projects')) || [];
-                projects.splice(projectIndex, 1); // Remove the project at the specified index
-                localStorage.setItem('projects', JSON.stringify(projects));
+                database.ref('projects').once('value', (snapshot) => {
+                    const projects = snapshot.val();
+                    projects.splice(projectIndex, 1); // Remove the project at the specified index
+                    database.ref('projects').set(projects);
 
-                // Show success message
-                document.getElementById('delete-message').innerHTML = '<p style="color: green;">Project deleted successfully!</p>';
+                    // Show success message
+                    document.getElementById('delete-message').innerHTML = '<p style="color: green;">Project deleted successfully!</p>';
 
-                // Reload dropdowns
-                loadProjectsIntoDropdowns();
+                    // Reload dropdowns
+                    loadProjectsIntoDropdowns();
+                });
             } else {
                 document.getElementById('delete-message').innerHTML = '<p style="color: red;">Please select a project.</p>';
             }
@@ -214,116 +229,43 @@
             const newLink = document.getElementById('new-project-link').value;
 
             if (projectIndex !== "") {
-                let projects = JSON.parse(localStorage.getItem('projects')) || [];
-                const project = projects[projectIndex];
+                database.ref('projects').once('value', (snapshot) => {
+                    const projects = snapshot.val();
+                    const project = projects[projectIndex];
 
-                if (newName) project.name = newName;
-                if (newLink) project.link = newLink;
+                    if (newName) project.name = newName;
+                    if (newLink) project.link = newLink;
 
-                if (newImage) {
-                    const reader = new FileReader();
-                    reader.onload = function (event) {
-                        project.image = event.target.result;
-                        localStorage.setItem('projects', JSON.stringify(projects));
+                    if (newImage) {
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            project.image = event.target.result;
+                            database.ref('projects').set(projects);
+
+                            // Show success message
+                            document.getElementById('edit-message').innerHTML = '<p style="color: green;">Project updated successfully!</p>';
+
+                            // Reload dropdowns
+                            loadProjectsIntoDropdowns();
+                        };
+                        reader.readAsDataURL(newImage);
+                    } else {
+                        database.ref('projects').set(projects);
 
                         // Show success message
                         document.getElementById('edit-message').innerHTML = '<p style="color: green;">Project updated successfully!</p>';
 
                         // Reload dropdowns
                         loadProjectsIntoDropdowns();
-                    };
-                    reader.readAsDataURL(newImage);
-                } else {
-                    localStorage.setItem('projects', JSON.stringify(projects));
-
-                    // Show success message
-                    document.getElementById('edit-message').innerHTML = '<p style="color: green;">Project updated successfully!</p>';
-
-                    // Reload dropdowns
-                    loadProjectsIntoDropdowns();
-                }
+                    }
+                });
             } else {
                 document.getElementById('edit-message').innerHTML = '<p style="color: red;">Please select a project.</p>';
             }
         });
 
-        // Function to edit profile
-        document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const profileImage = document.getElementById('profile-image').files[0];
-            const profileName = document.getElementById('profile-name').value;
-            const profileTagline = document.getElementById('profile-tagline').value;
-            const profilePhone = document.getElementById('profile-phone').value;
-            const profileEmail = document.getElementById('profile-email').value;
-            const profileLinkedin = document.getElementById('profile-linkedin').value;
-            const profileFacebook = document.getElementById('profile-facebook').value;
-
-            let profile = JSON.parse(localStorage.getItem('profile')) || {};
-
-            if (profileImage) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    profile.image = event.target.result;
-                    localStorage.setItem('profile', JSON.stringify(profile));
-                    updateProfile();
-                };
-                reader.readAsDataURL(profileImage);
-            }
-
-            if (profileName) profile.name = profileName;
-            if (profileTagline) profile.tagline = profileTagline;
-            if (profilePhone) profile.phone = profilePhone;
-            if (profileEmail) profile.email = profileEmail;
-            if (profileLinkedin) profile.linkedin = profileLinkedin;
-            if (profileFacebook) profile.facebook = profileFacebook;
-
-            localStorage.setItem('profile', JSON.stringify(profile));
-            updateProfile();
-
-            // Show success message
-            document.getElementById('profile-message').innerHTML = '<p style="color: green;">Profile updated successfully!</p>';
-        });
-
-        // Function to update profile in the portfolio page
-        function updateProfile() {
-            const profile = JSON.parse(localStorage.getItem('profile')) || {};
-            const profileImg = document.querySelector('.profile-img');
-            const profileName = document.querySelector('header h1');
-            const profileTagline = document.querySelector('.tagline');
-            const contactLinks = document.querySelectorAll('.contact-link');
-
-            if (profile.image) profileImg.src = profile.image;
-            if (profile.name) profileName.textContent = profile.name;
-            if (profile.tagline) profileTagline.textContent = profile.tagline;
-
-            if (profile.phone) {
-                contactLinks[0].querySelector('span').textContent = profile.phone;
-                contactLinks[0].href = `tel:${profile.phone}`;
-                contactLinks[1].href = `https://wa.me/${profile.phone}`;
-            }
-
-            if (profile.email) {
-                contactLinks[2].querySelector('span').textContent = profile.email;
-                contactLinks[2].href = `mailto:${profile.email}`;
-            }
-
-            if (profile.linkedin) {
-                contactLinks[3].querySelector('span').textContent = 'LinkedIn';
-                contactLinks[3].href = profile.linkedin;
-            }
-
-            if (profile.facebook) {
-                contactLinks[4].querySelector('span').textContent = 'Facebook';
-                contactLinks[4].href = profile.facebook;
-            }
-        }
-
         // Load projects into dropdowns when the page loads
         document.addEventListener('DOMContentLoaded', loadProjectsIntoDropdowns);
-
-        // Load profile data when the page loads
-        document.addEventListener('DOMContentLoaded', updateProfile);
     </script>
 </body>
 </html>
