@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmed Ayman's Portfolio - Futuristic Design</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Ahmed Ayman's Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="container">
             <div class="profile">
+                <!-- ضع صورتك الشخصية هنا -->
                 <img src="images/me.png" alt="Ahmed Ayman" class="profile-img">
                 <h1>Ahmed Ayman</h1>
-                <p class="tagline">Data Analyst | Futuristic Thinker</p>
             </div>
             <nav>
                 <ul>
@@ -30,14 +29,18 @@
     <section id="about" class="section">
         <div class="container">
             <h2>About Me</h2>
-            <p id="typing-effect"></p>
+            <p id="typing-effect">
+                <!-- النص سيتم كتابته بواسطة JavaScript -->
+            </p>
         </div>
     </section>
 
     <section id="projects" class="section">
         <div class="container">
             <h2>Projects</h2>
-            <div class="projects-grid" id="projects-grid"></div>
+            <div class="projects-grid" id="projects-grid">
+                <!-- المشاريع سيتم إضافتها بواسطة JavaScript -->
+            </div>
         </div>
     </section>
 
@@ -88,25 +91,24 @@
         <div class="container">
             <h2>Contact</h2>
             <div class="contact-links">
+                <!-- رابط رقم الموبيل -->
                 <a href="tel:+201286480475" class="contact-link">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>+20 128 648 0475</span>
+                    <i class="fas fa-phone-alt"></i> +20 128 648 0475
                 </a>
-                <a href="https://wa.me/201286480475" target="_blank" class="contact-link">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp</span>
-                </a>
+
+                <!-- رابط البريد الإلكتروني -->
                 <a href="mailto:altopahmed1999@gmail.com" class="contact-link">
-                    <i class="fas fa-envelope"></i>
-                    <span>altopahmed1999@gmail.com</span>
+                    <i class="fas fa-envelope"></i> altopahmed1999@gmail.com
                 </a>
+
+                <!-- رابط LinkedIn -->
                 <a href="https://www.linkedin.com/in/ahmed-ayman-095943210" target="_blank" class="contact-link">
-                    <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
+                    <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
+
+                <!-- رابط Facebook -->
                 <a href="https://web.facebook.com/" target="_blank" class="contact-link">
-                    <i class="fab fa-facebook"></i>
-                    <span>Facebook</span>
+                    <i class="fab fa-facebook"></i> Facebook
                 </a>
             </div>
         </div>
@@ -118,40 +120,9 @@
         </div>
     </footer>
 
+    <!-- JavaScript مدمج داخل HTML -->
     <script>
-        // Function to load projects from localStorage
-        function loadProjects() {
-            const projects = JSON.parse(localStorage.getItem('projects')) || [];
-            const projectsGrid = document.getElementById('projects-grid');
-            projectsGrid.innerHTML = ''; // Clear the grid before loading
-
-            projects.forEach(project => {
-                const projectElement = document.createElement('div');
-                projectElement.classList.add('project');
-
-                const imgElement = document.createElement('img');
-                imgElement.src = project.image;
-                imgElement.alt = project.name;
-
-                const nameElement = document.createElement('h3');
-                nameElement.textContent = project.name;
-
-                const linkElement = document.createElement('a');
-                linkElement.href = project.link;
-                linkElement.target = "_blank";
-                linkElement.appendChild(imgElement);
-
-                projectElement.appendChild(linkElement);
-                projectElement.appendChild(nameElement);
-
-                projectsGrid.appendChild(projectElement);
-            });
-        }
-
-        // Load projects when the page loads
-        document.addEventListener('DOMContentLoaded', loadProjects);
-
-        // Typing effect for the About Me section
+        // JavaScript لكتابة النبذة عنك حرفًا حرفًا مع إعادة الكتابة كل 10 ثواني
         const text = "Welcome to my portfolio! I am Ahmed Ayman, a passionate data analyst skilled in Excel, Power Query, Power BI, SQL Server, and Python. I graduated from the Faculty of Computer Science and Information at Zagazig University in 2021. Let's explore my journey and achievements together.";
         const typingElement = document.getElementById('typing-effect');
         let index = 0;
@@ -161,55 +132,71 @@
             if (index < text.length && !isDeleting) {
                 typingElement.innerHTML += text.charAt(index);
                 index++;
-                setTimeout(typeWriter, 50);
+                setTimeout(typeWriter, 50); // سرعة الكتابة (كل 50 مللي ثانية)
             } else if (index > 0 && isDeleting) {
                 typingElement.innerHTML = text.substring(0, index - 1);
                 index--;
-                setTimeout(typeWriter, 30);
+                setTimeout(typeWriter, 30); // سرعة الحذف (كل 30 مللي ثانية)
             } else {
                 isDeleting = !isDeleting;
-                setTimeout(typeWriter, isDeleting ? 10000 : 50);
+                setTimeout(typeWriter, isDeleting ? 10000 : 50); // الانتظار 10 ثواني قبل إعادة الكتابة
             }
         }
 
-        typeWriter();
+        typeWriter(); // بدء تأثير الكتابة
 
-        // Function to update profile from localStorage
-        function updateProfile() {
-            const profile = JSON.parse(localStorage.getItem('profile')) || {};
-            const profileImg = document.querySelector('.profile-img');
-            const profileName = document.querySelector('header h1');
-            const profileTagline = document.querySelector('.tagline');
-            const contactLinks = document.querySelectorAll('.contact-link');
+        // JavaScript لإضافة المشاريع ديناميكيًا
+        const projects = [
+            { 
+                name: "Paris Olympics Dashboard", 
+                image: "images/polympic.png", 
+                link: "https://example.com/paris-olympics" 
+            },
+            { 
+                name: "Health Care Dashboard", 
+                image: "images/Health1.png", 
+                link: "https://example.com/health-care" 
+            },
+            { 
+                name: "Financial Dashboard", 
+                image: "images/Finance.png", 
+                link: "https://example.com/financial-dashboard" 
+            },
+            { 
+                name: "Hospital Emergency Dashboard", 
+                image: "images/Health2.png", 
+                link: "https://example.com/hospital-emergency" 
+            },
+            { 
+                name: "Sales Market Dashboard", 
+                image: "images/Sales1.png", 
+                link: "https://example.com/sales-market" 
+            },
+        ];
 
-            if (profile.image) profileImg.src = profile.image;
-            if (profile.name) profileName.textContent = profile.name;
-            if (profile.tagline) profileTagline.textContent = profile.tagline;
+        const projectsGrid = document.getElementById('projects-grid');
 
-            if (profile.phone) {
-                contactLinks[0].querySelector('span').textContent = profile.phone;
-                contactLinks[0].href = `tel:${profile.phone}`;
-                contactLinks[1].href = `https://wa.me/${profile.phone}`;
-            }
+        projects.forEach(project => {
+            const projectElement = document.createElement('div');
+            projectElement.classList.add('project');
 
-            if (profile.email) {
-                contactLinks[2].querySelector('span').textContent = profile.email;
-                contactLinks[2].href = `mailto:${profile.email}`;
-            }
+            const imgElement = document.createElement('img');
+            imgElement.src = project.image; // يتم تحميل الصورة من المسار المحدد
+            imgElement.alt = project.name;
 
-            if (profile.linkedin) {
-                contactLinks[3].querySelector('span').textContent = 'LinkedIn';
-                contactLinks[3].href = profile.linkedin;
-            }
+            const nameElement = document.createElement('h3');
+            nameElement.textContent = project.name;
 
-            if (profile.facebook) {
-                contactLinks[4].querySelector('span').textContent = 'Facebook';
-                contactLinks[4].href = profile.facebook;
-            }
-        }
+            const linkElement = document.createElement('a');
+            linkElement.href = project.link;
+            linkElement.target = "_blank";
+            linkElement.appendChild(imgElement);
 
-        // Load profile data when the page loads
-        document.addEventListener('DOMContentLoaded', updateProfile);
+            projectElement.appendChild(linkElement);
+            projectElement.appendChild(nameElement);
+
+            projectsGrid.appendChild(projectElement);
+        });
     </script>
 </body>
 </html>
