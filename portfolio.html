@@ -11,7 +11,6 @@
     <header>
         <div class="container">
             <div class="profile">
-                <!-- ضع صورتك الشخصية هنا -->
                 <img src="images/me.png" alt="Ahmed Ayman" class="profile-img">
                 <h1>Ahmed Ayman</h1>
             </div>
@@ -38,8 +37,42 @@
     <section id="projects" class="section">
         <div class="container">
             <h2>Projects</h2>
-            <div class="projects-grid" id="projects-grid">
-                <!-- المشاريع سيتم إضافتها بواسطة JavaScript -->
+            <div class="projects-grid">
+                <!-- إضافة المشاريع يدويًا هنا -->
+                <div class="project">
+                    <a href="https://example.com/paris-olympics" target="_blank">
+                        <img src="images/polympic.png" alt="Paris Olympics Dashboard">
+                    </a>
+                    <h3>Paris Olympics Dashboard</h3>
+                </div>
+
+                <div class="project">
+                    <a href="https://example.com/health-care" target="_blank">
+                        <img src="images/Health1.png" alt="Health Care Dashboard">
+                    </a>
+                    <h3>Health Care Dashboard</h3>
+                </div>
+
+                <div class="project">
+                    <a href="https://example.com/financial-dashboard" target="_blank">
+                        <img src="images/Finance.png" alt="Financial Dashboard">
+                    </a>
+                    <h3>Financial Dashboard</h3>
+                </div>
+
+                <div class="project">
+                    <a href="https://example.com/hospital-emergency" target="_blank">
+                        <img src="images/Health2.png" alt="Hospital Emergency Dashboard">
+                    </a>
+                    <h3>Hospital Emergency Dashboard</h3>
+                </div>
+
+                <div class="project">
+                    <a href="https://example.com/sales-market" target="_blank">
+                        <img src="images/Sales1.png" alt="Sales Market Dashboard">
+                    </a>
+                    <h3>Sales Market Dashboard</h3>
+                </div>
             </div>
         </div>
     </section>
@@ -91,22 +124,18 @@
         <div class="container">
             <h2>Contact</h2>
             <div class="contact-links">
-                <!-- رابط رقم الموبيل -->
                 <a href="tel:+201286480475" class="contact-link">
                     <i class="fas fa-phone-alt"></i> +20 128 648 0475
                 </a>
 
-                <!-- رابط البريد الإلكتروني -->
                 <a href="mailto:altopahmed1999@gmail.com" class="contact-link">
                     <i class="fas fa-envelope"></i> altopahmed1999@gmail.com
                 </a>
 
-                <!-- رابط LinkedIn -->
                 <a href="https://www.linkedin.com/in/ahmed-ayman-095943210" target="_blank" class="contact-link">
                     <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
 
-                <!-- رابط Facebook -->
                 <a href="https://web.facebook.com/" target="_blank" class="contact-link">
                     <i class="fab fa-facebook"></i> Facebook
                 </a>
@@ -120,9 +149,8 @@
         </div>
     </footer>
 
-    <!-- JavaScript مدمج داخل HTML -->
+    <!-- JavaScript لكتابة النبذة عنك حرفًا حرفًا -->
     <script>
-        // JavaScript لكتابة النبذة عنك حرفًا حرفًا مع إعادة الكتابة كل 10 ثواني
         const text = "Welcome to my portfolio! I am Ahmed Ayman, a passionate data analyst skilled in Excel, Power Query, Power BI, SQL Server, and Python. I graduated from the Faculty of Computer Science and Information at Zagazig University in 2021. Let's explore my journey and achievements together.";
         const typingElement = document.getElementById('typing-effect');
         let index = 0;
@@ -144,59 +172,6 @@
         }
 
         typeWriter(); // بدء تأثير الكتابة
-
-        // JavaScript لإضافة المشاريع ديناميكيًا
-        const projects = [
-            { 
-                name: "Paris Olympics Dashboard", 
-                image: "images/polympic.png", 
-                link: "https://example.com/paris-olympics" 
-            },
-            { 
-                name: "Health Care Dashboard", 
-                image: "images/Health1.png", 
-                link: "https://example.com/health-care" 
-            },
-            { 
-                name: "Financial Dashboard", 
-                image: "images/Finance.png", 
-                link: "https://example.com/financial-dashboard" 
-            },
-            { 
-                name: "Hospital Emergency Dashboard", 
-                image: "images/Health2.png", 
-                link: "https://example.com/hospital-emergency" 
-            },
-            { 
-                name: "Sales Market Dashboard", 
-                image: "images/Sales1.png", 
-                link: "https://example.com/sales-market" 
-            },
-        ];
-
-        const projectsGrid = document.getElementById('projects-grid');
-
-        projects.forEach(project => {
-            const projectElement = document.createElement('div');
-            projectElement.classList.add('project');
-
-            const imgElement = document.createElement('img');
-            imgElement.src = project.image; // يتم تحميل الصورة من المسار المحدد
-            imgElement.alt = project.name;
-
-            const nameElement = document.createElement('h3');
-            nameElement.textContent = project.name;
-
-            const linkElement = document.createElement('a');
-            linkElement.href = project.link;
-            linkElement.target = "_blank";
-            linkElement.appendChild(imgElement);
-
-            projectElement.appendChild(linkElement);
-            projectElement.appendChild(nameElement);
-
-            projectsGrid.appendChild(projectElement);
-        });
     </script>
 </body>
 </html>
